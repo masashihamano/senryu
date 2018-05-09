@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user, {only: [:index, :show, :edit, :update]}
-  before_action :forbid_login_user, {only: [:new, :create, :login_form, :login]}
-  before_action :ensure_correct_user, {only: [:edit, :update]}
+  before_action :authenticate_user, only: [:index, :show, :edit, :update]
+  before_action :forbid_login_user, only: [:new, :create, :login_form, :login]
+  before_action :ensure_correct_user, only: [:edit, :update]
 
   def index
-    @users = User.all
+    @users = User.all.order(created_at: :desc)
   end
 
   def show
@@ -16,12 +16,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(
-      name: params[:name],
-      email: params[:email],
-      image_name:"1.png",
-      password: params[:password]
-    )
+    @user = User.new(user_params)
+    # @user = User.new(
+    #   name: params[:name],
+    #   email: params[:email],
+    #   image_name:"1.png",         ←もしかしたらダメ？
+    #   password: params[:password]
+    # )
     if @user.save
       session[:user_id] = @user.id
       flash[:notice] = "ユーザー登録が完了しました"
@@ -32,11 +33,11 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find_by(id: params[:id])
+    # @user = User.find_by(id: params[:id])
   end
 
   def update
-    @user = User.find_by(id: params[:id])
+    # @user = User.find_by(id: params[:id])
     @user.name = params[:name]
     @user.email = params[:email]
     if params[:image]
@@ -61,7 +62,7 @@ class UsersController < ApplicationController
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       flash[:notice] = "ログインしました"
-      redirect_to("/posts/index")
+      redirect_to("/posts")
     else
       @error_message = "メールアドレスまたはパスワードが間違っています"
       @email = params[:email]
@@ -81,11 +82,20 @@ class UsersController < ApplicationController
     @likes = Like.where(user_id: @user.id)
   end
 
+
+private
+
   def ensure_correct_user
+    @user = @user = User.find(params[:id])
     if @current_user.id != params[:id].to_i
       flash[:notice] = "権限がありません"
-      redirect_to("/posts/index")
+      redirect_to("/posts")
     end
   end
+
+  def user_params
+    params.require(:user).permit(:name, :email, :image_name, :password)
+  end
+
 
 end

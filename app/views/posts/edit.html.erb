@@ -1,7 +1,7 @@
 <div class="main posts-new">
   <div class="container">
     <h1 class="form-heading">編集する</h1>
-    <%= form_tag("/posts/#{@post.id}/update") do %>
+    <%= form_tag("/posts/#{@post.id}", {method: "PATCH"}) do %>
     <div class="form">
       <div class="form-body">
           <% @post.errors.full_messages.each do |message| %>
@@ -9,7 +9,13 @@
               <%= message %>
             </div>
           <% end %>
-        <textarea name="content"><%= @post.content %></textarea>
+
+        <p>1行目</p>
+        <input name="content" value="<%= @post.content %>">
+        <p>2行目</p>
+        <input name="content2" value="<%= @post.content2 %>">
+        <p>3行目</p>
+        <input name="content3" value="<%= @post.content3 %>">
         <input type="submit" value="保存">
       </div>
     </div>

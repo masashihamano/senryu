@@ -1,28 +1,33 @@
 Rails.application.routes.draw do
-  post "likes/:post_id/create" => "likes#create"
-  post "likes/:post_id/destroy" => "likes#destroy"
+  post "likes/:post_id/create", to: "likes#create"
+  post "likes/:post_id/destroy", to: "likes#destroy"
 
-  get "login" => "users#login_form"
-  post "login" => "users#login"
-  post "logout" => "users#logout"
+  get "login", to: "users#login_form"
+  post "login", to: "users#login"
+  post "logout", to: "users#logout"
 
-  get "signup" => "users#new"
-  get "users/index" => "users#index"
-  get "users/:id" => "users#show"
-  post "users/create" => "users#create"
-  get "users/:id/edit" => "users#edit"
-  post "users/:id/update" => "users#update"
-  get "users/:id/likes" => "users#likes"
+  get "signup", to: "users#new"
+  get "users/:id/likes", to: "users#likes"
+  # get "users/index", to: "users#index"
+  # get "users/:id", to: "users#show"
+  # post "users/create", to: "users#create"
+  # get "users/:id/edit", to: "users#edit"
+  # post "users/:id/update", to: "users#update"
+  resources 'users'
 
-  get "posts/index" => "posts#index"
-  get "posts/new" => "posts#new"
-  get "posts/:id" => "posts#show"
-  post "posts/create" => "posts#create"
-  get "posts/:id/edit" => "posts#edit"
-  post "posts/:id/update" => "posts#update"
-  post "posts/:id/destroy" => "posts#destroy"
+  # get "posts/index", to: "posts#index"
+  # get "posts/new", to: "posts#new"
+  # get "posts/:id", to: "posts#show"
+  # post "posts/create", to: "posts#create"
+  # get "posts/:id/edit", to: "posts#edit"
+  # post "posts/:id/update", to: "posts#update"
+  # post "posts/:id/destroy", to: "posts#destroy"
+  resources 'posts'
 
-  get "/" => "home#top"
-  get "about" => "home#about"
+  # get "/", to: "home#top"
+  # get 'home#top'
+  root 'home#top'
+  get 'home/about'
+  # get "about", to: "home#about"
 
 end
