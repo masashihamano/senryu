@@ -16,13 +16,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    # @user = User.new(
-    #   name: params[:name],
-    #   email: params[:email],
-    #   image_name:"1.png",         ←もしかしたらダメ？
-    #   password: params[:password]
-    # )
+    # @user = User.new(user_params)
+    @user = User.new(
+      name: params[:name],
+      email: params[:email],
+      image_name:"1.png",        #←もしかしたらダメ？
+      password: params[:password]
+    )
     if @user.save
       session[:user_id] = @user.id
       flash[:notice] = "ユーザー登録が完了しました"
@@ -33,11 +33,11 @@ class UsersController < ApplicationController
   end
 
   def edit
-    # @user = User.find_by(id: params[:id])
+    @user = User.find_by(id: params[:id])
   end
 
   def update
-    # @user = User.find_by(id: params[:id])
+    @user = User.find_by(id: params[:id])
     @user.name = params[:name]
     @user.email = params[:email]
     if params[:image]
@@ -94,7 +94,7 @@ private
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :image_name, :password)
+    params.require(:user).permit(:name, :email, :image_name, :password_digest)
   end
 
 
