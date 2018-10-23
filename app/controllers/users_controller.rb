@@ -83,8 +83,6 @@ class UsersController < ApplicationController
   end
 
 
-private
-
   def ensure_correct_user
     @user = @user = User.find(params[:id])
     if @current_user.id != params[:id].to_i
@@ -92,6 +90,8 @@ private
       redirect_to("/posts")
     end
   end
+
+  private
 
   def user_params
     params.require(:user).permit(:name, :email, :image_name, :password_digest)
